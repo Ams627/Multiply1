@@ -120,13 +120,11 @@ namespace Multiply1
                             StrokeThickness = 2,
                             // Margin = new Thickness { Left = i * SquareSize + Gap, Top = j * SquareSize + Gap, Right = 0, Bottom = 0 },
                         };
-                        System.Diagnostics.Debug.WriteLine($"Margin: {rectangle.Margin.Left}, {rectangle.Margin.Top}, {rectangle.Margin.Right}, {rectangle.Margin.Bottom}");
                         canvas.Children.Add(rectangle);
                         left = i * (SquareSize + Gap);
                         top = j * (SquareSize + Gap);
                         Canvas.SetLeft(rectangle, left);
                         Canvas.SetTop(rectangle, top);
-                        System.Diagnostics.Debug.WriteLine($"Actual Height {canvas.ActualHeight} - actual width {canvas.ActualWidth}");
                     }
                     canvas.Height = top + SquareSize;
                     canvas.Width = left + SquareSize;

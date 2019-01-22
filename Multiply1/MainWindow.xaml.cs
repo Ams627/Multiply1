@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Multiply1
 {
@@ -20,7 +21,11 @@ namespace Multiply1
         public MainWindow()
         {
             InitializeComponent();
-            //startstarttypingtypingherehere
+        }
+
+        private void TextBlock_TargetUpdated(object sender, DataTransferEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine($"Updated");
         }
     }
 }

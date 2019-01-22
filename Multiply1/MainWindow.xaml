@@ -11,11 +11,11 @@
 </Window.DataContext>
     <Grid>
         <StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,50,0,0">
-                <TextBlock FontSize="72">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,50,0,50">
+                <TextBlock FontSize="72" TargetUpdated="TextBlock_TargetUpdated" SourceUpdated="TextBlock_TargetUpdated">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0} x {1} = ">
-                            <Binding Path="Multiplicand" />
+                            <Binding Path="Multiplicand" NotifyOnSourceUpdated="True" NotifyOnTargetUpdated="True"/>
                             <Binding Path="Multiplier" />
                         </MultiBinding>
                     </TextBlock.Text>
