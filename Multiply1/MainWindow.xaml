@@ -22,7 +22,7 @@
                 </TextBlock>
                 <TextBox BorderBrush="Black" BorderThickness="1" Width="200" FontSize="72" MaxLength="3"/>
             </StackPanel>
-            <local:Blocks Rows="{Binding Multiplicand}" Columns="{Binding Multiplier}" SquareSize="80" Gap="2" HorizontalAlignment="Center"/>
+            <local:Blocks Rows="{Binding Multiplicand, NotifyOnSourceUpdated=True, Mode=TwoWay}" Columns="{Binding Multiplier, NotifyOnSourceUpdated=True, Mode=TwoWay}" SquareSize="80" Gap="2" HorizontalAlignment="Center"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -57,7 +57,7 @@ namespace Multiply1
         }
 
         public static readonly DependencyProperty RowsProperty =
-            DependencyProperty.Register("Rows", typeof(int), typeof(Blocks), new PropertyMetadata(2));
+            DependencyProperty.Register("Rows", typeof(int), typeof(Blocks), new PropertyMetadata(2, new PropertyChangedCallback(OnMultPropertyChanged)));
 
         public int Columns
         {
@@ -66,9 +66,18 @@ namespace Multiply1
         }
 
         public static readonly DependencyProperty ColumnsProperty =
-            DependencyProperty.Register("Columns", typeof(int), typeof(Blocks), new PropertyMetadata(2));
+            DependencyProperty.Register("Columns", typeof(int), typeof(Blocks), new PropertyMetadata(2, new PropertyChangedCallback(OnMultPropertyChanged)));
 
-
+        private static void OnMultPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine($"BCHANGED!");
+            if (d is Control control)
+            {
+                control.UpdateLayout();
+                control.InvalidateArrange();
+                control.ApplyTemplate();
+            }
+        }
 
         public int SquareSize
         {
