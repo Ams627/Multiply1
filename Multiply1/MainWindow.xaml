@@ -10,19 +10,24 @@
     <local:ViewModel/>
 </Window.DataContext>
     <Grid>
+        <local:VoiceOver Multiplier="{Binding Multiplier, UpdateSourceTrigger=Explicit}" Multiplicand="{Binding Multiplicand, UpdateSourceTrigger=Explicit}"/>
         <StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,50,0,50">
-                <TextBlock FontSize="72" TargetUpdated="TextBlock_TargetUpdated" SourceUpdated="TextBlock_TargetUpdated">
+                <TextBlock FontSize="72" >
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0} x {1} = ">
-                            <Binding Path="Multiplicand" NotifyOnSourceUpdated="True" NotifyOnTargetUpdated="True"/>
-                            <Binding Path="Multiplier" />
+                            <Binding Path="Sum.First" />
+                            <Binding Path="Sum.Second" />
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                <TextBox BorderBrush="Black" BorderThickness="1" Width="200" FontSize="72" MaxLength="3"/>
+                <TextBox BorderBrush="Black" BorderThickness="1" Width="200" FontSize="72" MaxLength="3" Text="{Binding Answer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Command="{Binding Path=AnswerCommand}" Key="Enter" />
+                    </TextBox.InputBindings>
+                </TextBox>
             </StackPanel>
-            <local:Blocks Rows="{Binding Multiplicand, NotifyOnSourceUpdated=True, Mode=TwoWay}" Columns="{Binding Multiplier, NotifyOnSourceUpdated=True, Mode=TwoWay}" SquareSize="80" Gap="2" HorizontalAlignment="Center"/>
+            <local:Blocks x:Name="blocks1" Rows="{Binding Multiplicand, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=Explicit}" Columns="{Binding Multiplier, NotifyOnSourceUpdated=True, Mode=TwoWay}" SquareSize="80" Gap="2" HorizontalAlignment="Center"/>
         </StackPanel>
     </Grid>
 </Window>

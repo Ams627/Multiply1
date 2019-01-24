@@ -15,37 +15,9 @@ using System.Windows.Shapes;
 
 namespace Multiply1
 {
-    /// <summary>
-    /// Follow steps 1a or 1b and then 2 to use this custom control in a XAML file.
-    ///
-    /// Step 1a) Using this custom control in a XAML file that exists in the current project.
-    /// Add this XmlNamespace attribute to the root element of the markup file where it is 
-    /// to be used:
-    ///
-    ///     xmlns:MyNamespace="clr-namespace:Multiply1"
-    ///
-    ///
-    /// Step 1b) Using this custom control in a XAML file that exists in a different project.
-    /// Add this XmlNamespace attribute to the root element of the markup file where it is 
-    /// to be used:
-    ///
-    ///     xmlns:MyNamespace="clr-namespace:Multiply1;assembly=Multiply1"
-    ///
-    /// You will also need to add a project reference from the project where the XAML file lives
-    /// to this project and Rebuild to avoid compilation errors:
-    ///
-    ///     Right click on the target project in the Solution Explorer and
-    ///     "Add Reference"->"Projects"->[Browse to and select this project]
-    ///
-    ///
-    /// Step 2)
-    /// Go ahead and use your control in the XAML file.
-    ///
-    ///     <MyNamespace:Blocks/>
-    ///
-    /// </summary>
     public class Blocks : Control
     {
+        private Canvas _canvas = null;
         static Blocks()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Blocks), new FrameworkPropertyMetadata(typeof(Blocks)));
@@ -71,11 +43,9 @@ namespace Multiply1
         private static void OnMultPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine($"BCHANGED!");
-            if (d is Control control)
+            if (d is Blocks blocksControl)
             {
-                control.UpdateLayout();
-                control.InvalidateArrange();
-                control.ApplyTemplate();
+                blocksControl.DrawControl();
             }
         }
 
@@ -88,8 +58,6 @@ namespace Multiply1
         // Using a DependencyProperty as the backing store for SquareSize.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SquareSizeProperty =
             DependencyProperty.Register("SquareSize", typeof(int), typeof(Blocks), new PropertyMetadata(100));
-
-
 
         public int Gap
         {
@@ -104,40 +72,41 @@ namespace Multiply1
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            var r = new Rectangle
-            {
-                Height = 100,
-                Width = 100,
-                Fill = Brushes.Green,
-                Stroke = Brushes.Red
-            };
 
             var canvasPart = Template.FindName("Part_Canvas", this);
             if (canvasPart is Canvas canvas)
             {
-                int left = 0, top = 0;
-                for (var i = 0; i < Columns; i++)
+                _canvas = canvas;
+                DrawControl();
+            }
+        }
+
+        private void DrawControl()
+        {
+            int left = 0, top = 0;
+            for (var i = 0; i < Columns; i++)
+            {
+                for (var j = 0; j < Rows; j++)
                 {
-                    for (var j = 0; j < Rows; j++)
+                    var rectangle = new Rectangle
                     {
-                        var rectangle = new Rectangle
-                        {
-                            Height = SquareSize,
-                            Width = SquareSize,
-                            Fill = new SolidColorBrush(Color.FromRgb(0x88, 0x22, (byte)(0x88 + 30 * i))),
-                            Stroke = Brushes.Black,
-                            StrokeThickness = 2,
-                            // Margin = new Thickness { Left = i * SquareSize + Gap, Top = j * SquareSize + Gap, Right = 0, Bottom = 0 },
-                        };
-                        canvas.Children.Add(rectangle);
-                        left = i * (SquareSize + Gap);
-                        top = j * (SquareSize + Gap);
-                        Canvas.SetLeft(rectangle, left);
-                        Canvas.SetTop(rectangle, top);
-                    }
-                    canvas.Height = top + SquareSize;
-                    canvas.Width = left + SquareSize;
+                        Height = SquareSize,
+                        Width = SquareSize,
+                        Fill = new SolidColorBrush(Color.FromRgb(0x88, 0x22, (byte)(0x88 + 30 * i))),
+                        Stroke = Brushes.Black,
+                        StrokeThickness = 2,
+                        // Margin = new Thickness { Left = i * SquareSize + Gap, Top = j * SquareSize + Gap, Right = 0, Bottom = 0 },
+                    };
+                    _canvas.Children.Add(rectangle);
+                    left = i * (SquareSize + Gap);
+                    top = j * (SquareSize + Gap);
+                    Canvas.SetLeft(rectangle, left);
+                    Canvas.SetTop(rectangle, top);
                 }
+
+                // the canvas width and height must be set manually - this is the nature of the Canvas class:
+                _canvas.Height = top + SquareSize;
+                _canvas.Width = left + SquareSize;
             }
         }
     }
