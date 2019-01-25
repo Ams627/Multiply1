@@ -83,30 +83,34 @@ namespace Multiply1
 
         private void DrawControl()
         {
-            int left = 0, top = 0;
-            for (var i = 0; i < Columns; i++)
+            if (_canvas != null)
             {
-                for (var j = 0; j < Rows; j++)
+                _canvas.Children.Clear();
+                int left = 0, top = 0;
+                for (var i = 0; i < Columns; i++)
                 {
-                    var rectangle = new Rectangle
+                    for (var j = 0; j < Rows; j++)
                     {
-                        Height = SquareSize,
-                        Width = SquareSize,
-                        Fill = new SolidColorBrush(Color.FromRgb(0x88, 0x22, (byte)(0x88 + 30 * i))),
-                        Stroke = Brushes.Black,
-                        StrokeThickness = 2,
-                        // Margin = new Thickness { Left = i * SquareSize + Gap, Top = j * SquareSize + Gap, Right = 0, Bottom = 0 },
-                    };
-                    _canvas.Children.Add(rectangle);
-                    left = i * (SquareSize + Gap);
-                    top = j * (SquareSize + Gap);
-                    Canvas.SetLeft(rectangle, left);
-                    Canvas.SetTop(rectangle, top);
-                }
+                        var rectangle = new Rectangle
+                        {
+                            Height = SquareSize,
+                            Width = SquareSize,
+                            Fill = new SolidColorBrush(Color.FromRgb(0x88, 0x22, (byte)(0x88 + 30 * i))),
+                            Stroke = Brushes.Black,
+                            StrokeThickness = 2,
+                            // Margin = new Thickness { Left = i * SquareSize + Gap, Top = j * SquareSize + Gap, Right = 0, Bottom = 0 },
+                        };
+                        _canvas.Children.Add(rectangle);
+                        left = i * (SquareSize + Gap);
+                        top = j * (SquareSize + Gap);
+                        Canvas.SetLeft(rectangle, left);
+                        Canvas.SetTop(rectangle, top);
+                    }
 
-                // the canvas width and height must be set manually - this is the nature of the Canvas class:
-                _canvas.Height = top + SquareSize;
-                _canvas.Width = left + SquareSize;
+                    // the canvas width and height must be set manually - this is the nature of the Canvas class:
+                    _canvas.Height = top + SquareSize;
+                    _canvas.Width = left + SquareSize;
+                }
             }
         }
     }

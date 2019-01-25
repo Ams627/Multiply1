@@ -10,9 +10,9 @@
     <local:ViewModel/>
 </Window.DataContext>
     <Grid>
-        <local:VoiceOver Multiplier="{Binding Multiplier, UpdateSourceTrigger=Explicit}" Multiplicand="{Binding Multiplicand, UpdateSourceTrigger=Explicit}"/>
+        <local:VoiceOver QuestionString="{Binding Sum.SpokenSum}"/>
         <StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,50,0,50">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="736,50">
                 <TextBlock FontSize="72" >
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0} x {1} = ">
@@ -27,7 +27,7 @@
                     </TextBox.InputBindings>
                 </TextBox>
             </StackPanel>
-            <local:Blocks x:Name="blocks1" Rows="{Binding Multiplicand, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=Explicit}" Columns="{Binding Multiplier, NotifyOnSourceUpdated=True, Mode=TwoWay}" SquareSize="80" Gap="2" HorizontalAlignment="Center"/>
+            <local:Blocks x:Name="blocks1" Rows="{Binding Sum.First}" Columns="{Binding Sum.Second}" SquareSize="80" Gap="2" HorizontalAlignment="Center"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -11,40 +11,6 @@ using System.Runtime.CompilerServices;
 
 namespace Multiply1
 {
-    public class BinarySum
-    {
-        private readonly Random _random = new Random();
-        public enum Operators
-        {
-            Plus, Minus, Multiply, Divide
-        }
-        public int First { get; set; }
-        public int Second { get; set; }
-        public Operators Operator { get; set; } = Operators.Plus;
-
-        public int Result()
-        {
-            switch (Operator)
-            {
-                case Operators.Plus:
-                    return First + Second;
-                case Operators.Minus:
-                    return First - Second;
-                case Operators.Multiply:
-                    return First * Second;
-                case Operators.Divide:
-                    return First / Second;
-                default:
-                    throw new Exception("Invalid Operator");
-            }
-        }
-
-        public void Randomise()
-        {
-            First = _random.Next(1, 10);
-            Second = _random.Next(1, 10);
-        }
-    }
     public class ViewModel : DependencyObject, INotifyPropertyChanged
     {
         private readonly CultureInfo ukculture = new CultureInfo("en-gb");
@@ -64,7 +30,7 @@ namespace Multiply1
             if (!string.IsNullOrWhiteSpace(Answer))
             {
                 var numericalAnswer = Convert.ToInt32(Answer);
-                if (numericalAnswer == Multiplicand * Multiplier)
+                if (numericalAnswer == Sum.Result())
                 {
                     SpeakCorrect();
                 }
@@ -74,13 +40,7 @@ namespace Multiply1
                 }
                 System.Diagnostics.Debug.WriteLine($"Answered!");
                 Answer = "";
-                var rnd = new Random();
-                Multiplier = rnd.Next(1, 5);
-                Multiplicand = rnd.Next(1, 5);
-
-                //MultiplierProperty.in
-
-                System.Diagnostics.Debug.WriteLine($"new sum is {Multiplicand} x {Multiplier}");
+                Sum.Randomise();
             }
         }
 
@@ -118,9 +78,8 @@ namespace Multiply1
             timer.Tick += (s, e) =>
             {
                 Sum.Randomise();
-                System.Diagnostics.Debug.WriteLine($"Multiplicand is {Multiplicand}");
             };
-            timer.Start();
+//            timer.Start();
         }
 
 
@@ -133,33 +92,33 @@ namespace Multiply1
 
         // Using a DependencyProperty as the backing store for Sum.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SumProperty =
-            DependencyProperty.Register("Sum", typeof(BinarySum), typeof(ViewModel), new PropertyMetadata(new BinarySum { First = 2, Second = 3 }));
+            DependencyProperty.Register("Sum", typeof(BinarySum), typeof(ViewModel), new PropertyMetadata(new BinarySum { First = 2, Second = 3, Operator = BinarySum.Operators.Multiply }));
 
 
 
-        public int Multiplicand
-        {
-            get { return (int)GetValue(MultiplicandProperty); }
-            set { SetValue(MultiplicandProperty, value); }
-        }
+        //public int Multiplicand
+        //{
+        //    get { return (int)GetValue(MultiplicandProperty); }
+        //    set { SetValue(MultiplicandProperty, value); }
+        //}
 
-        // Using a DependencyProperty as the backing store for Multiplicand.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty MultiplicandProperty =
-            DependencyProperty.Register("Multiplicand", typeof(int), typeof(ViewModel), new PropertyMetadata(2, new PropertyChangedCallback(OnMultPropertyChanged)));
+        //// Using a DependencyProperty as the backing store for Multiplicand.  This enables animation, styling, binding, etc...
+        //public static readonly DependencyProperty MultiplicandProperty =
+        //    DependencyProperty.Register("Multiplicand", typeof(int), typeof(ViewModel), new PropertyMetadata(2, new PropertyChangedCallback(OnMultPropertyChanged)));
 
-        private static void OnMultPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-        }
+        //private static void OnMultPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //}
 
-        public int Multiplier
-        {
-            get { return (int)GetValue(MultiplierProperty); }
-            set { SetValue(MultiplierProperty, value); }
-        }
+        //public int Multiplier
+        //{
+        //    get { return (int)GetValue(MultiplierProperty); }
+        //    set { SetValue(MultiplierProperty, value); }
+        //}
 
-        // Using a DependencyProperty as the backing store for Multiplier.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty MultiplierProperty =
-            DependencyProperty.Register("Multiplier", typeof(int), typeof(ViewModel), new PropertyMetadata(2, new PropertyChangedCallback(OnMultPropertyChanged)));
+        //// Using a DependencyProperty as the backing store for Multiplier.  This enables animation, styling, binding, etc...
+        //public static readonly DependencyProperty MultiplierProperty =
+        //    DependencyProperty.Register("Multiplier", typeof(int), typeof(ViewModel), new PropertyMetadata(2, new PropertyChangedCallback(OnMultPropertyChanged)));
 
 
         public string Answer

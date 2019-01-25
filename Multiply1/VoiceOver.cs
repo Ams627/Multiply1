@@ -26,26 +26,17 @@ namespace Multiply1
             DefaultStyleKeyProperty.OverrideMetadata(typeof(VoiceOver), new FrameworkPropertyMetadata(typeof(VoiceOver)));
         }
 
-        public int Multiplicand
+        public string QuestionString
         {
-            get { return (int)GetValue(MultiplicandProperty); }
-            set { SetValue(MultiplicandProperty, value); }
+            get { return (string)GetValue(QuestionStringProperty); }
+            set { SetValue(QuestionStringProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Multiplicand.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty MultiplicandProperty =
-            DependencyProperty.Register("Multiplicand", typeof(int), typeof(VoiceOver), new PropertyMetadata(0, new PropertyChangedCallback(OnQuestionChanged)));
+        // Using a DependencyProperty as the backing store for QuestionString.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty QuestionStringProperty =
+            DependencyProperty.Register("QuestionString", typeof(string), typeof(VoiceOver), new PropertyMetadata("", new PropertyChangedCallback(OnQuestionChanged)));
 
 
-        public int Multiplier
-        {
-            get { return (int)GetValue(MultiplierProperty); }
-            set { SetValue(MultiplierProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for Multiplier.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty MultiplierProperty =
-            DependencyProperty.Register("Multiplier", typeof(int), typeof(VoiceOver), new PropertyMetadata(0, new PropertyChangedCallback(OnQuestionChanged)));
 
         private static void OnQuestionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -58,15 +49,13 @@ namespace Multiply1
         void SpeakQuestion()
         {
             // check if app is in design mode
-            if (Application.Current is App)
+            if (Application.Current is App && !string.IsNullOrWhiteSpace(QuestionString))
             {
                 SpeechSynthesizer synthesizer = new SpeechSynthesizer();
                 synthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Child, 0, ukculture);
                 synthesizer.Volume = 100;  // 0...100
                 synthesizer.Rate = -2;     // -10...10
-
-                var stringToSpeak = $"{Multiplicand} times {Multiplier}";
-                synthesizer.SpeakAsync(stringToSpeak);
+                synthesizer.SpeakAsync(QuestionString);
             }
         }
 
